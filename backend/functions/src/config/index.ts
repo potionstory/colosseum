@@ -1,16 +1,11 @@
-import admin from "firebase-admin";
-import serviceAccountKey from "../../serviceAccountKey.json";
-import { databaseURL, storageBucket } from "./firebase";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { firebaseConfig } from "./firebase";
 
-admin.initializeApp({
-  credential: admin.credential.cert(
-    JSON.parse(JSON.stringify(serviceAccountKey))
-  ),
-  databaseURL,
-  storageBucket,
-});
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+console.log(db);
+const auth = getAuth(app);
 
-const db = admin.firestore();
-db.settings({ ignoreUndefinedProperties: true });
-
-export { admin, db };
+export { db, auth };
