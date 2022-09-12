@@ -1,27 +1,19 @@
-import { useState } from "react";
 import type { NextPage } from "next";
+import { useTheme } from "next-themes";
 
 const Home: NextPage = () => {
-  const [darkToggle, setDarkToggle] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   return (
-    <div
-      className={`h-screen w-full flex items-center justify-center flex-col ${
-        darkToggle ? "dark" : "light"
-      }`}
-    >
-      <label className="toggleDarkBtn">
-        <input type="checkbox" onClick={() => setDarkToggle(!darkToggle)} />
-        <span className="slideBtnTg round"></span>
-      </label>
-      <div className="max-w-sm rounded overflow-hidden bg-gray-100 p-5 rounded-lg mt-4 text-white dark:bg-gray-900">
-        <img
-          className="w-full"
-          src="https://v1.tailwindcss.com/img/card-top.jpg"
-          alt="Sunset in the mountains"
-        />
+    <div className="h-screen w-full flex items-center justify-center flex-col">
+      <select value={theme} onChange={(e) => setTheme(e.target.value)}>
+        <option value="system">System</option>
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+      </select>
+      <div className="max-w-sm overflow-hidden bg-primary-sub rounded-lg mt-4 text-white">
         <div className="px-6 py-4">
-          <div className="text-gray-800 dark:text-gray-200 font-bold text-xl mb-2">
+          <div className="text-primary-main font-bold text-xl mb-2">
             The Coldest Sunset
           </div>
           <p className="text-gray-800 dark:text-gray-200">
