@@ -1,11 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
-  content: ["./src/pages/**/*.tsx"],
+  content: ["./src/pages/**/*.tsx", "./src/components/**/*.tsx"],
   theme: {
     extend: {
       colors: {
-        "theme": "var(--theme)",
+        theme: "var(--theme)",
+        "theme-inverse": "var(--theme-inverse)",
+        "theme-inverse-blur": "var(--theme-inverse-blur)",
         "neutral-main": "var(--neutral-main)",
         "neutral-sub": "var(--neutral-sub)",
         "primary-main": "var(--primary-main)",

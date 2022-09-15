@@ -4,6 +4,7 @@
 
 .light {
   --theme: #FFF;
+  --theme-inverse: #000;
   --neutral-main: #687076;
   --neutral-sub: #F1F3F5;
   --primary-main: #7828C8;
@@ -20,6 +21,7 @@
 
 .dark {
   --theme: #000;
+  --theme-inverse: #FFF;
   --neutral-main: #9BA1A6;
   --neutral-sub: #16181A;
   --primary-main: #9750DD;
