@@ -4,6 +4,8 @@ import { useTheme } from "next-themes";
 const Home: NextPage = () => {
   const { theme, setTheme } = useTheme();
 
+  console.log("🚀 ~ file: index.tsx ~ line 44 ~ theme", theme);
+
   return (
     <div className="h-screen w-full flex items-center justify-center flex-col">
       <select value={theme} onChange={(e) => setTheme(e.target.value)}>

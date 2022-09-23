@@ -1,48 +1,92 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import type { NextComponentType } from "next";
+import Link from "next/link";
+import { useTheme } from "next-themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import {
+  faRankingStar,
+  faFireFlameCurved,
+  faMagnifyingGlass,
+  faUser,
+  faGear,
+} from "@fortawesome/free-solid-svg-icons";
+import { Player } from "@lottiefiles/react-lottie-player";
+import * as themeLottie from "../../lotties/theme.json";
 
 const Header: NextComponentType = () => {
-  const [active, isActive] = useState(false);
+  const { theme, setTheme } = useTheme();
 
-  console.log("🚀 ~ file: Header.tsx ~ line 26 ~ active", active);
+  let ref = useRef(null);
+
+  const onThemeHandler = () => {
+    console.log("onThemeHandler");
+    if (theme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+  };
 
   return (
     <header className="fixed bottom-0 left-0 w-full p-4">
-      <div className="relative flex h-12 sm:h-20">
-        <button
-          type="button"
-          className={`transition-all ease-out absolute top-0 w-12 h-12 rounded-full bg-theme-inverse ${
-            active ? "left-0" : "left-14"
-          }`}
-          onClick={() => isActive(!active)}
-        >
-          이전
-        </button>
-        <nav
-          className={`transition-all ease-out relative flex-1 p-1 rounded-full bg-theme-inverse ${
-            active && "mx-14"
-          }`}
-        >
+      <div className="flex-1 relative flex h-12 px-14 sm:h-24">
+        <div className="absolute top-0 left-0 w-12 h-12 rounded-full bg-primary-sub">
+          prev
+        </div>
+        <nav className="transition-all ease-out relative flex-1 p-1 rounded-full bg-primary-sub sm:p-2">
           <ul className="flex gap-1 justify-between h-full">
-            <li className="rounded-full bg-primary-main">
-              <FontAwesomeIcon icon={faRankingStar} />
+            <li className="flex items-center justify-center w-10 sm:w-20">
+              <Link href="/">
+                <FontAwesomeIcon
+                  icon={faRankingStar}
+                  className="text-primary-main text-xl sm:text-4xl"
+                />
+              </Link>
             </li>
-            <li className="rounded-full bg-primary-main">메뉴2</li>
-            <li className="rounded-full bg-primary-main">메뉴3</li>
-            <li className="rounded-full bg-primary-main">메뉴4</li>
-            <li className="rounded-full bg-primary-main">메뉴5</li>
+            <li className="flex items-center justify-center w-10 sm:w-20">
+              <Link href="/trend">
+                <FontAwesomeIcon
+                  icon={faFireFlameCurved}
+                  className="text-primary-main text-xl sm:text-4xl"
+                />
+              </Link>
+            </li>
+            <li className="flex items-center justify-center w-10 sm:w-20">
+              <Link href="/search">
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className="text-primary-main text-xl sm:text-4xl"
+                />
+              </Link>
+            </li>
+            <li className="flex items-center justify-center w-10 sm:w-20">
+              <Link href="/auth">
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="text-primary-main text-xl sm:text-4xl"
+                />
+              </Link>
+            </li>
+            <li className="flex items-center justify-center w-10 sm:w-20">
+              <Link href="/setting">
+                <FontAwesomeIcon
+                  icon={faGear}
+                  className="text-primary-main text-xl sm:text-4xl"
+                />
+              </Link>
+            </li>
           </ul>
         </nav>
         <button
-          type="button"
-          className={`transition-all ease-out absolute top-0 w-12 h-12 rounded-full bg-theme-inverse ${
-            active ? "right-0" : "right-14"
-          }`}
-          onClick={() => isActive(!active)}
+          className="absolute overflow-hidden top-0 right-0 w-12 h-12"
+          onClick={onThemeHandler}
         >
-          다음
+          <Player
+            ref={ref}
+            src={themeLottie}
+            className="absolute -top-7 -left-7"
+            style={{ width: 104, height: 104 }}
+          />
         </button>
       </div>
     </header>
