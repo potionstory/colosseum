@@ -1,20 +1,85 @@
 import React from "react";
-import type { NextComponentType } from "next";
+import type { NextPage } from "next";
 import { styled } from "../../styles/stitches.config";
 
 interface Props {
-  child: React.ReactNode;
+  children: React.ReactNode;
 }
 
-const Main: NextComponentType<Props> = ({ child }) => {
-  return <MainWrap>{child}</MainWrap>;
+const Main: NextPage<Props> = ({ children }) => {
+  return (
+    <MainWrap>
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+      {children}
+    </MainWrap>
+  );
 };
 
 export default Main;
 
 const MainWrap = styled("main", {
-  backgroundColor: "orange",
+  padding: "16px 16px 80px",
   "@sm": {
-    backgroundColor: "purple",
+    paddingBottom: "92px",
   },
 });

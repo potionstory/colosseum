@@ -11,7 +11,7 @@ const Layout: NextPage<Props> = ({ children }) => {
   return (
     <>
       <Header />
-      <Main child={children} />
+      <Main>{children}</Main>
     </>
   );
 };
