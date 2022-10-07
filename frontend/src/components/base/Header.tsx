@@ -14,6 +14,7 @@ import {
 import Lottie, { LottieRef } from "lottie-react";
 import { styled } from "../../styles/stitches.config";
 import * as themeLottie from "../../lotties/theme.json";
+import * as dynamicNavItemLottie from "../../lotties/dynamicNavItem.json";
 
 const nav = [
   {
@@ -69,17 +70,53 @@ const Header: NextComponentType = () => {
   return (
     <HeaderWrap>
       <HeaderInner>
-        <HeaderDynamicButton>
-          <FontAwesomeIcon icon={faAngleLeft} />
-        </HeaderDynamicButton>
+        <HeaderDynamicSwitch>
+          <HeaderDynamicSwitchInner>
+            <HeaderDynamicSwitchNavWrap>
+              <Lottie
+                animationData={dynamicNavItemLottie}
+                renderer="svg"
+                loop={true}
+                autoplay={true}
+                rendererSettings={{
+                  preserveAspectRatio: "xMidYMid meet",
+                }}
+                style={{
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+              <HeaderDynamicSwitchNav>
+                {nav.map((item, index) => {
+                  const { id, icon } = item;
+
+                  return (
+                    <HeaderDynamicSwitchNavItem
+                      key={id}
+                      isActive={index === navIndex}
+                    >
+                      <FontAwesomeIcon icon={icon} />
+                    </HeaderDynamicSwitchNavItem>
+                  );
+                })}
+              </HeaderDynamicSwitchNav>
+            </HeaderDynamicSwitchNavWrap>
+            <HeaderDynamicSwitchPrev>
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </HeaderDynamicSwitchPrev>
+          </HeaderDynamicSwitchInner>
+        </HeaderDynamicSwitch>
         <HeaderDynamicIsland>
-          <HeaderNavWrap>
-            <HeaderNavList>
+          <HeaderDynamicIslandNavWrap>
+            <HeaderNavDynamicIslandNavList>
               {nav.map((item, index) => {
                 const { id, path, icon } = item;
 
                 return (
-                  <HeaderNavItem
+                  <HeaderNavDynamicIslandNavItem
                     key={id}
                     order={
                       index === navIndex
@@ -89,16 +126,18 @@ const Header: NextComponentType = () => {
                         : index - 1
                     }
                   >
-                    <HeaderNavItemButton onClick={() => setNavIndext(index)}>
+                    <HeaderNavDynamicIslandNavItemButton
+                      onClick={() => setNavIndext(index)}
+                    >
                       <Link href={path}>
                         <FontAwesomeIcon icon={icon} />
                       </Link>
-                    </HeaderNavItemButton>
-                  </HeaderNavItem>
+                    </HeaderNavDynamicIslandNavItemButton>
+                  </HeaderNavDynamicIslandNavItem>
                 );
               })}
-            </HeaderNavList>
-          </HeaderNavWrap>
+            </HeaderNavDynamicIslandNavList>
+          </HeaderDynamicIslandNavWrap>
         </HeaderDynamicIsland>
         <HeaderThemeButton onClick={onThemeHandler}>
           <Lottie
@@ -132,7 +171,7 @@ const HeaderWrap = styled("header", {
   bottom: 0,
   left: 0,
   width: "100%",
-  padding: 8,
+  padding: 16,
 });
 
 const HeaderInner = styled("div", {
@@ -142,26 +181,96 @@ const HeaderInner = styled("div", {
   position: "relative",
   height: 48,
   "@sm": {
-    height: 64,
+    height: 60,
   },
 });
 
-const HeaderDynamicButton = styled("button", {
+const HeaderDynamicSwitch = styled("div", {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  borderRadius: "50%",
   width: 48,
   height: "100%",
+  padding: 4,
+  borderRadius: "50%",
   backgroundColor: "$theme-inverse",
+  "@sm": {
+    width: 60,
+  },
+});
+
+const HeaderDynamicSwitchInner = styled("div", {
+  flex: 1,
+  position: "relative",
+  overflow: "hidden",
+  borderRadius: "50%",
+  height: "100%",
+});
+
+const HeaderDynamicSwitchNavWrap = styled("div", {
+  display: "flex",
+  overflow: "hidden",
+  position: "absolute",
+  top: 0,
+  right: 0,
+  zIndex: 10,
+  width: "100%",
+  height: "100%",
+  borderRadius: "50%",
+  backgroundColor: "$theme-inverse",
+});
+
+const HeaderDynamicSwitchNav = styled("ul", {
+  flex: 1,
+  position: "relative",
+  height: "100%",
+});
+
+const HeaderDynamicSwitchNavItem = styled("li", {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  position: "absolute",
+  top: 0,
+  right: "-100%",
+  zIndex: 0,
+  width: "100%",
+  height: "100%",
+  transition: "right 400ms cubic-bezier(0.4, 0, 0.2, 1)",
+  variants: {
+    isActive: {
+      true: {
+        right: 0,
+        zIndex: 10,
+      },
+    },
+  },
   "& svg": {
-    color: "$primary-main",
-    fontSize: 20,
+    zIndex: 10,
+    color: "$theme",
+    fontSize: 16,
   },
   "@sm": {
-    width: 64,
     "& svg": {
-      fontSize: 28,
+      fontSize: 20,
+    },
+  },
+});
+
+const HeaderDynamicSwitchPrev = styled("button", {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  borderRadius: "50%",
+  "& svg": {
+    color: "$primary-main",
+    fontSize: 16,
+  },
+  "@sm": {
+    "& svg": {
+      fontSize: 20,
     },
   },
 });
@@ -172,11 +281,11 @@ const HeaderThemeButton = styled("button", {
   width: 48,
   height: "100%",
   "@sm": {
-    width: 64,
+    width: 60,
   },
 });
 
-const HeaderNavWrap = styled("nav", {
+const HeaderDynamicIslandNavWrap = styled("nav", {
   position: "relative",
   borderRadius: 32,
   backgroundColor: "$theme-inverse",
@@ -189,25 +298,26 @@ const HeaderDynamicIsland = styled("div", {
   flex: 1,
 });
 
-const HeaderNavList = styled("ul", {
+const HeaderNavDynamicIslandNavList = styled("ul", {
   overflow: "hidden",
   position: "relative",
-  width: 160,
+  width: 172,
   height: "100%",
   borderRadius: 20,
   "@sm": {
-    width: 224,
-    borderRadius: 28,
+    width: 220,
+    borderRadius: 26,
   },
 });
 
-const HeaderNavItem = styled("li", {
+const HeaderNavDynamicIslandNavItem = styled("li", {
   position: "absolute",
   top: 0,
   zIndex: 0,
-  width: "25%",
+  width: "calc(25% - 3px)",
   height: "100%",
   borderRadius: "50%",
+  backgroundColor: "$neutral-inverse",
   transition: "left 400ms cubic-bezier(0.4, 0, 0.2, 1)",
   variants: {
     order: {
@@ -219,31 +329,31 @@ const HeaderNavItem = styled("li", {
         left: 0,
       },
       "1": {
-        left: "25%",
+        left: "calc(25% + 1px)",
       },
       "2": {
-        left: "50%",
+        left: "calc(50% + 2px)",
       },
       "3": {
-        left: "75%",
+        left: "calc(75% + 3px)",
       },
     },
   },
 });
 
-const HeaderNavItemButton = styled("button", {
+const HeaderNavDynamicIslandNavItemButton = styled("button", {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   width: "100%",
   height: "100%",
   "& svg": {
-    color: "$primary-main",
-    fontSize: 20,
+    color: "$theme",
+    fontSize: 16,
   },
   "@sm": {
     "& svg": {
-      fontSize: 24,
+      fontSize: 20,
     },
   },
 });

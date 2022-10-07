@@ -27,6 +27,9 @@ const globalStyles = globalCss({
     fontFamily: `'Gothic A1', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`,
   },
+  "#__next": {
+    height: "100%",
+  },
   "img, picture, video, canvas, svg": {
     maxWidth: "100%",
   },
