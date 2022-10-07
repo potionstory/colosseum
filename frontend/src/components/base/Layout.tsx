@@ -7,10 +7,6 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Main = styled("main", {
-  padding: "0 1rem",
-});
-
 const Layout: NextPage<Props> = ({ children }) => {
   return (
     <>
@@ -28,3 +24,7 @@ const Layout: NextPage<Props> = ({ children }) => {
 };
 
 export default Layout;
+
+const Main = styled("main", {
+  padding: "0 1rem",
+});

@@ -12,7 +12,7 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import Lottie, { LottieRef } from "lottie-react";
-import { styled } from "@stitches/react";
+import { styled } from "../../styles/stitches.config";
 import * as themeLottie from "../../lotties/theme.json";
 
 const nav = [
@@ -43,35 +43,6 @@ const nav = [
   },
 ];
 
-const HeaderWrap = styled("header", {
-  position: "fixed",
-  bottom: 0,
-  left: 0,
-  width: "100%",
-  padding: "1rem",
-});
-
-const HeaderLeftButton = styled("button", {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  borderRadius: "50%",
-  variants: {
-    color: {
-      bp2: { backgroundColor: "$theme" },
-      gray: { backgroundColor: "$primary-main" },
-    },
-  },
-  // "@sm": {
-  //   backgroundColor: "$theme-inverse",
-  // },
-  // "@md": {
-  //   backgroundColor: "$primary-main",
-  // },
-});
-
-// flex justify-center items-center w-12 h-12 rounded-full bg-primary-sub sm:w-16 sm:h-16
-
 const Header: NextComponentType = () => {
   const themeLottieRef: LottieRef = useRef(null);
   const { theme, setTheme } = useTheme();
@@ -95,59 +66,41 @@ const Header: NextComponentType = () => {
 
   themeLottieRef.current?.setSpeed(2);
 
-  console.log("🚀 ~ file: Header.tsx ~ line 132 ~ navIndex", navIndex);
-
   return (
     <HeaderWrap>
-      <div className="flex justify-between relative h-12 sm:h-16">
-        <HeaderLeftButton
-          color={{
-            "@initial": "gray",
-            "@bp2": "bp2",
-          }}
-        >
-          <FontAwesomeIcon
-            icon={faAngleLeft}
-            className="text-primary-main text-xl sm:text-3xl"
-          />
-        </HeaderLeftButton>
-        <nav className="transition-all ease-out relative p-1 rounded-full bg-primary-sub sm:p-2">
-          <ul className="overflow-hidden relative flex items-center justify-between rounded-full h-full w-40 sm:w-48">
-            {nav.map((item, index) => {
-              const { id, path, icon } = item;
+      <HeaderInner>
+        <HeaderDynamicButton>
+          <FontAwesomeIcon icon={faAngleLeft} />
+        </HeaderDynamicButton>
+        <HeaderDynamicIsland>
+          <HeaderNavWrap>
+            <HeaderNavList>
+              {nav.map((item, index) => {
+                const { id, path, icon } = item;
 
-              console.log(index);
-              return (
-                <li
-                  key={id}
-                  className={`absolute ${
-                    index !== navIndex
-                      ? "left-" +
-                        (navIndex > index ? index * 12 : (index - 1) * 12)
-                      : "-left-12"
-                  } overflow-hidden rounded-full transition-all ease-out duration-500 w-10 h-10 sm:w-12 sm:h-12 bg-theme-inverse`}
-                >
-                  <button
-                    type="button"
-                    className="flex items-center justify-center w-full h-full"
-                    onClick={() => setNavIndext(index)}
+                return (
+                  <HeaderNavItem
+                    key={id}
+                    order={
+                      index === navIndex
+                        ? "active"
+                        : navIndex > index
+                        ? index
+                        : index - 1
+                    }
                   >
-                    <Link href={path}>
-                      <FontAwesomeIcon
-                        icon={icon}
-                        className="text-primary-main text-xl sm:text-2xl"
-                      />
-                    </Link>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-        <button
-          className="relative overflow-hidden w-12 h-12 sm:w-16 sm:h-16"
-          onClick={onThemeHandler}
-        >
+                    <HeaderNavItemButton onClick={() => setNavIndext(index)}>
+                      <Link href={path}>
+                        <FontAwesomeIcon icon={icon} />
+                      </Link>
+                    </HeaderNavItemButton>
+                  </HeaderNavItem>
+                );
+              })}
+            </HeaderNavList>
+          </HeaderNavWrap>
+        </HeaderDynamicIsland>
+        <HeaderThemeButton onClick={onThemeHandler}>
           <Lottie
             lottieRef={themeLottieRef}
             animationData={themeLottie}
@@ -166,10 +119,131 @@ const Header: NextComponentType = () => {
               transform: "translate(-50%, -50%)",
             }}
           />
-        </button>
-      </div>
+        </HeaderThemeButton>
+      </HeaderInner>
     </HeaderWrap>
   );
 };
 
 export default Header;
+
+const HeaderWrap = styled("header", {
+  position: "fixed",
+  bottom: 0,
+  left: 0,
+  width: "100%",
+  padding: 8,
+});
+
+const HeaderInner = styled("div", {
+  display: "flex",
+  columnGap: 8,
+  justifyContent: "space-between",
+  position: "relative",
+  height: 48,
+  "@sm": {
+    height: 64,
+  },
+});
+
+const HeaderDynamicButton = styled("button", {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: "50%",
+  width: 48,
+  height: "100%",
+  backgroundColor: "$theme-inverse",
+  "& svg": {
+    color: "$primary-main",
+    fontSize: 20,
+  },
+  "@sm": {
+    width: 64,
+    "& svg": {
+      fontSize: 28,
+    },
+  },
+});
+
+const HeaderThemeButton = styled("button", {
+  position: "relative",
+  overflow: "hidden",
+  width: 48,
+  height: "100%",
+  "@sm": {
+    width: 64,
+  },
+});
+
+const HeaderNavWrap = styled("nav", {
+  position: "relative",
+  borderRadius: 32,
+  backgroundColor: "$theme-inverse",
+  padding: 4,
+});
+
+const HeaderDynamicIsland = styled("div", {
+  display: "flex",
+  justifyContent: "center",
+  flex: 1,
+});
+
+const HeaderNavList = styled("ul", {
+  overflow: "hidden",
+  position: "relative",
+  width: 160,
+  height: "100%",
+  borderRadius: 20,
+  "@sm": {
+    width: 224,
+    borderRadius: 28,
+  },
+});
+
+const HeaderNavItem = styled("li", {
+  position: "absolute",
+  top: 0,
+  zIndex: 0,
+  width: "25%",
+  height: "100%",
+  borderRadius: "50%",
+  transition: "left 400ms cubic-bezier(0.4, 0, 0.2, 1)",
+  variants: {
+    order: {
+      active: {
+        left: "-25%",
+        zIndex: 10,
+      },
+      "0": {
+        left: 0,
+      },
+      "1": {
+        left: "25%",
+      },
+      "2": {
+        left: "50%",
+      },
+      "3": {
+        left: "75%",
+      },
+    },
+  },
+});
+
+const HeaderNavItemButton = styled("button", {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  height: "100%",
+  "& svg": {
+    color: "$primary-main",
+    fontSize: 20,
+  },
+  "@sm": {
+    "& svg": {
+      fontSize: 24,
+    },
+  },
+});

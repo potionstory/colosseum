@@ -1,6 +1,6 @@
 import { createStitches } from "@stitches/react";
 
-export const { styled, getCssText, createTheme, globalCss } = createStitches({
+export const { styled, createTheme } = createStitches({
   theme: {
     colors: {
       theme: "#FFFFFF",
@@ -21,9 +21,9 @@ export const { styled, getCssText, createTheme, globalCss } = createStitches({
   },
 
   media: {
-    bp1: "(min-width: 640px)",
-    bp2: "(min-width: 768px)",
-    bp3: "(min-width: 1024px)",
+    sm: "(min-width: 640px)",
+    md: "(min-width: 768px)",
+    lg: "(min-width: 1024px)",
   },
 });
 
@@ -45,19 +45,3 @@ export const darkTheme = createTheme({
     "error-sub": "#300313",
   },
 });
-
-const GlobalStyles = globalCss({
-  body: {
-    padding: 0,
-    margin: 0,
-    backgroundColor: "$theme",
-    fontFamily: `'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`,
-  },
-  a: {
-    color: "inherit",
-    textDecoration: "none",
-  },
-});
-
-GlobalStyles();
