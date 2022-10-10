@@ -1,6 +1,6 @@
 import React from "react";
 import type { NextPage } from "next";
-import Header from "./Header";
+import Header from "./header";
 import Main from "./Main";
 
 interface Props {
