@@ -1,7 +1,15 @@
 import React from "react";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import {
+  useSpring,
+  useSpringRef,
+  useChain,
+  animated,
+  easings,
+} from "react-spring";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useHeaderStore from "store/header";
 import { styled } from "styles/stitches.config";
 
 type NavItem = {
@@ -16,14 +24,51 @@ type DynamicIslandType = {
   onNavIndexChange: (index: number) => void;
 };
 
-const Header: React.FC<DynamicIslandType> = ({
+const DynamicIsland: React.FC<DynamicIslandType> = ({
   navList,
   navIndex,
   onNavIndexChange,
 }) => {
+  const { page, isDynamic, setPage } = useHeaderStore((state) => state);
+  const router = useRouter();
+
+  const navRouteHandle = (index: number, path: string) => {
+    onNavIndexChange(index);
+    router.push(path);
+    setPage(path);
+  };
+
+  const navAnimatedRef = useSpringRef();
+  const colosseumAnimatedRef = useSpringRef();
+
+  const navAnimated = useSpring({
+    width: isDynamic ? "0%" : "100%",
+    config: {
+      duration: 400,
+      easing: easings.easeInOutCubic,
+    },
+    ref: navAnimatedRef,
+  });
+
+  const colosseumAnimated = useSpring({
+    width: isDynamic ? "100%" : "0%",
+    config: {
+      duration: 400,
+      easing: easings.easeInOutCubic,
+    },
+    ref: colosseumAnimatedRef,
+  });
+
+  useChain(
+    isDynamic
+      ? [navAnimatedRef, colosseumAnimatedRef]
+      : [colosseumAnimatedRef, navAnimatedRef],
+    [0, 0.2]
+  );
+
   return (
-    <DynamicIsland>
-      <DynamicIslandNavWrap>
+    <DynamicIslandWrap>
+      <DynamicIslandNavWrap style={navAnimated}>
         <DynamicIslandNavList>
           {navList.map((item, index) => {
             const { id, path, icon } = item;
@@ -40,74 +85,108 @@ const Header: React.FC<DynamicIslandType> = ({
                 }
               >
                 <DynamicIslandNavItemButton
-                  onClick={() => onNavIndexChange(index)}
+                  onClick={() => navRouteHandle(index, path)}
                 >
-                  <Link href={path}>
-                    <FontAwesomeIcon icon={icon} />
-                  </Link>
+                  <FontAwesomeIcon icon={icon} />
                 </DynamicIslandNavItemButton>
               </DynamicIslandNavItem>
             );
           })}
         </DynamicIslandNavList>
       </DynamicIslandNavWrap>
-    </DynamicIsland>
+      {page === "/" && (
+        <DynamicIslandColosseumWrap style={colosseumAnimated}>
+          Colosseum
+        </DynamicIslandColosseumWrap>
+      )}
+      {page === "/trend" && (
+        <DynamicIslandColosseumWrap style={colosseumAnimated}>
+          Trend
+        </DynamicIslandColosseumWrap>
+      )}
+      {page === "/search" && (
+        <DynamicIslandColosseumWrap style={colosseumAnimated}>
+          Search
+        </DynamicIslandColosseumWrap>
+      )}
+      {page === "/auth" && (
+        <DynamicIslandColosseumWrap style={colosseumAnimated}>
+          Auth
+        </DynamicIslandColosseumWrap>
+      )}
+      {page === "/setting" && (
+        <DynamicIslandColosseumWrap style={colosseumAnimated}>
+          Setting
+        </DynamicIslandColosseumWrap>
+      )}
+    </DynamicIslandWrap>
   );
 };
 
-export default Header;
+export default DynamicIsland;
 
-const DynamicIslandNavWrap = styled("nav", {
-  position: "relative",
-  borderRadius: 32,
-  backgroundColor: "$theme-inverse",
-  padding: 4,
-});
-
-const DynamicIsland = styled("div", {
+const DynamicIslandWrap = styled("div", {
   display: "flex",
   justifyContent: "center",
   flex: 1,
+  position: "relative",
+});
+
+const DynamicIslandNavWrap = styled(animated.nav, {
+  display: "flex",
+  justifyContent: "center",
+  overflow: "hidden",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  height: "100%",
+  borderRadius: 24,
+  transform: "translate(-50%, -50%)",
+  "@sm": {
+    borderRadius: 32,
+  },
 });
 
 const DynamicIslandNavList = styled("ul", {
   overflow: "hidden",
   position: "relative",
-  width: 172,
+  padding: 4,
+  width: 180,
   height: "100%",
-  borderRadius: 20,
+  borderRadius: 24,
+  backgroundColor: "$theme-inverse",
   "@sm": {
-    width: 220,
-    borderRadius: 26,
+    width: 228,
+    borderRadius: 30,
   },
 });
 
 const DynamicIslandNavItem = styled("li", {
   position: "absolute",
-  top: 0,
+  top: 4,
   zIndex: 0,
-  width: "calc(25% - 3px)",
-  height: "100%",
+  width: "calc(25% - 5px)",
+  height: "calc(100% - 8px)",
   borderRadius: "50%",
   backgroundColor: "$neutral-inverse",
   transition: "left 400ms cubic-bezier(0.4, 0, 0.2, 1)",
   variants: {
     order: {
       active: {
-        left: "-25%",
+        left: "calc(-25% + 5px)",
         zIndex: 10,
       },
       "0": {
-        left: 0,
+        left: 4,
       },
       "1": {
-        left: "calc(25% + 1px)",
+        left: "calc(25% + 3px)",
       },
       "2": {
         left: "calc(50% + 2px)",
       },
       "3": {
-        left: "calc(75% + 3px)",
+        left: "calc(75% + 1px)",
       },
     },
   },
@@ -127,5 +206,25 @@ const DynamicIslandNavItemButton = styled("button", {
     "& svg": {
       fontSize: 20,
     },
+  },
+});
+
+const DynamicIslandColosseumWrap = styled(animated.div, {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  height: "100%",
+  borderRadius: 24,
+  transform: "translate(-50%, -50%)",
+  backgroundColor: "$theme-inverse",
+  fontSize: "1rem",
+  fontWeight: 700,
+  color: "$theme",
+  "@sm": {
+    borderRadius: 32,
   },
 });

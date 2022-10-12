@@ -1,7 +1,9 @@
 import React from "react";
+import { useSpring, animated, easings } from "react-spring";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import useHeaderStore from "store/header";
 import DynamicSwitchNavItem from "components/base/header/DynamicSwitchNavItem";
 import { styled } from "styles/stitches.config";
 
@@ -17,10 +19,28 @@ type DynamicSwitchType = {
 };
 
 const DynamicSwitch: React.FC<DynamicSwitchType> = ({ navList, navIndex }) => {
+  const { isDynamic, setIsDynamic } = useHeaderStore((state) => state);
+
+  const switchNavAnimated = useSpring({
+    left: isDynamic ? "100%" : "0%",
+    config: {
+      duration: 400,
+      easing: easings.easeInOutCubic,
+    },
+  });
+
+  const switchPrevAnimated = useSpring({
+    left: isDynamic ? "0%" : "100%",
+    config: {
+      duration: 400,
+      easing: easings.easeInOutCubic,
+    },
+  });
+
   return (
     <DynamicSwitchWarp>
       <DynamicSwitchInner>
-        <DynamicSwitchNavWrap>
+        <DynamicSwitchNavWrap style={switchNavAnimated}>
           <DynamicSwitchNav>
             {navList.map((item, index) => {
               const { id, icon } = item;
@@ -35,7 +55,10 @@ const DynamicSwitch: React.FC<DynamicSwitchType> = ({ navList, navIndex }) => {
             })}
           </DynamicSwitchNav>
         </DynamicSwitchNavWrap>
-        <DynamicSwitchPrev>
+        <DynamicSwitchPrev
+          style={switchPrevAnimated}
+          onClick={() => setIsDynamic(false)}
+        >
           <FontAwesomeIcon icon={faAngleLeft} />
         </DynamicSwitchPrev>
       </DynamicSwitchInner>
@@ -67,7 +90,7 @@ const DynamicSwitchInner = styled("div", {
   height: "100%",
 });
 
-const DynamicSwitchNavWrap = styled("div", {
+const DynamicSwitchNavWrap = styled(animated.div, {
   display: "flex",
   overflow: "hidden",
   position: "absolute",
@@ -84,15 +107,19 @@ const DynamicSwitchNav = styled("ul", {
   height: "100%",
 });
 
-const DynamicSwitchPrev = styled("button", {
+const DynamicSwitchPrev = styled(animated.button, {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   position: "absolute",
   top: 0,
   left: 0,
   width: "100%",
   height: "100%",
   borderRadius: "50%",
+  backgroundColor: "$neutral-inverse",
   "& svg": {
-    color: "$primary-main",
+    color: "$theme",
     fontSize: 16,
   },
   "@sm": {

@@ -7,72 +7,7 @@ interface Props {
 }
 
 const Main: NextPage<Props> = ({ children }) => {
-  return (
-    <MainWrap>
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-      {children}
-    </MainWrap>
-  );
+  return <MainWrap>{children}</MainWrap>;
 };
 
 export default Main;

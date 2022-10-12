@@ -16,7 +16,7 @@ const DynamicSwitchNavItem: React.FC<DynamicSwitchNavItemType> = ({
   const navItemAnimated = useSpring({
     left: isActive ? "0%" : "100%",
     config: {
-      duration: 500,
+      duration: 400,
       easing: easings.easeInOutCubic,
     },
   });

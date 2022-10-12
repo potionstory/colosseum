@@ -19,7 +19,7 @@ const DynamicTheme: React.FC = () => {
   const themeSVGWrapAnimated = useSpring({
     rotateZ: theme === "dark" ? 0 : 180,
     config: {
-      duration: 500,
+      duration: 400,
       easing: easings.easeInOutCubic,
     },
   });
@@ -27,7 +27,7 @@ const DynamicTheme: React.FC = () => {
   const themeSVGBoxAnimated = useSpring({
     rotateZ: theme === "dark" ? 0 : 360,
     config: {
-      duration: 1000,
+      duration: 800,
       easing: easings.easeInOutCubic,
     },
   });

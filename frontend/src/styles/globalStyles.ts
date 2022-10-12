@@ -26,6 +26,7 @@ const globalStyles = globalCss({
     backgroundColor: "$theme",
     fontFamily: `'Gothic A1', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`,
+    color: "$theme-inverse",
   },
   "#__next": {
     height: "100%",
