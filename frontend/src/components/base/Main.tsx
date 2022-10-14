@@ -15,6 +15,6 @@ export default Main;
 const MainWrap = styled("main", {
   padding: "16px 16px 80px",
   "@sm": {
-    paddingBottom: "92px",
+    paddingBottom: 92,
   },
 });

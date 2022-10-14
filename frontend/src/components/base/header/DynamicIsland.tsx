@@ -10,6 +10,11 @@ import {
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useHeaderStore from "store/header";
+import DynamicIslandColosseum from "./DynamicIslandColosseum";
+import DynamicIslandTrend from "./DynamicIslandTrend";
+import DynamicIslandSearch from "./DynamicIslandSearch";
+import DynamicIslandAuth from "./DynamicIslandAuth";
+import DynamicIslandSetting from "./DynamicIslandSetting";
 import { styled } from "styles/stitches.config";
 
 type NavItem = {
@@ -68,7 +73,7 @@ const DynamicIsland: React.FC<DynamicIslandType> = ({
 
   return (
     <DynamicIslandWrap>
-      <DynamicIslandNavWrap style={navAnimated}>
+      <DynamicIslandNavWrap style={navAnimated} isDynamic={isDynamic}>
         <DynamicIslandNavList>
           {navList.map((item, index) => {
             const { id, path, icon } = item;
@@ -94,31 +99,15 @@ const DynamicIsland: React.FC<DynamicIslandType> = ({
           })}
         </DynamicIslandNavList>
       </DynamicIslandNavWrap>
-      {page === "/" && (
-        <DynamicIslandColosseumWrap style={colosseumAnimated}>
-          Colosseum
-        </DynamicIslandColosseumWrap>
-      )}
-      {page === "/trend" && (
-        <DynamicIslandColosseumWrap style={colosseumAnimated}>
-          Trend
-        </DynamicIslandColosseumWrap>
-      )}
-      {page === "/search" && (
-        <DynamicIslandColosseumWrap style={colosseumAnimated}>
-          Search
-        </DynamicIslandColosseumWrap>
-      )}
-      {page === "/auth" && (
-        <DynamicIslandColosseumWrap style={colosseumAnimated}>
-          Auth
-        </DynamicIslandColosseumWrap>
-      )}
-      {page === "/setting" && (
-        <DynamicIslandColosseumWrap style={colosseumAnimated}>
-          Setting
-        </DynamicIslandColosseumWrap>
-      )}
+      <DynamicIslandCenterWrap style={colosseumAnimated} isDynamic={isDynamic}>
+        <DynamicIslandCenterInner>
+          {page === "/" && <DynamicIslandColosseum />}
+          {page === "/trend" && <DynamicIslandTrend />}
+          {page === "/search" && <DynamicIslandSearch />}
+          {page === "/auth" && <DynamicIslandAuth />}
+          {page === "/setting" && <DynamicIslandSetting />}
+        </DynamicIslandCenterInner>
+      </DynamicIslandCenterWrap>
     </DynamicIslandWrap>
   );
 };
@@ -139,11 +128,19 @@ const DynamicIslandNavWrap = styled(animated.nav, {
   position: "absolute",
   top: "50%",
   left: "50%",
+  zIndex: 10,
   height: "100%",
   borderRadius: 24,
   transform: "translate(-50%, -50%)",
   "@sm": {
-    borderRadius: 32,
+    borderRadius: 30,
+  },
+  variants: {
+    isDynamic: {
+      true: {
+        zIndex: 0,
+      },
+    },
   },
 });
 
@@ -209,21 +206,31 @@ const DynamicIslandNavItemButton = styled("button", {
   },
 });
 
-const DynamicIslandColosseumWrap = styled(animated.div, {
+const DynamicIslandCenterWrap = styled(animated.div, {
   display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
   overflow: "hidden",
   position: "absolute",
-  top: "50%",
+  bottom: "0%",
   left: "50%",
+  zIndex: 0,
   height: "100%",
+  transform: "translateX(-50%)",
+  variants: {
+    isDynamic: {
+      true: {
+        zIndex: 10,
+      },
+    },
+  },
+});
+
+const DynamicIslandCenterInner = styled("div", {
+  display: "flex",
+  flex: 1,
+  overflow: "hidden",
+  padding: 4,
   borderRadius: 24,
-  transform: "translate(-50%, -50%)",
   backgroundColor: "$theme-inverse",
-  fontSize: "1rem",
-  fontWeight: 700,
-  color: "$theme",
   "@sm": {
     borderRadius: 32,
   },

@@ -26,6 +26,7 @@ const globalStyles = globalCss({
     backgroundColor: "$theme",
     fontFamily: `'Gothic A1', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`,
+    fontSize: "1.25rem",
     color: "$theme-inverse",
   },
   "#__next": {
@@ -46,6 +47,11 @@ const globalStyles = globalCss({
   },
   "menu, ol, ul, dl": {
     listStyle: "none",
+  },
+  "@media (min-height: 640px)": {
+    "html, body": {
+      fontSize: "1rem",
+    },
   },
 });
 
