@@ -4,7 +4,9 @@ export const { styled, createTheme } = createStitches({
   theme: {
     colors: {
       theme: "#FFFFFF",
+      "theme-blur": "rgba(255, 255, 255, 0.8)",
       "theme-inverse": "#161616",
+      "theme-inverse-blur": "rgba(22, 22, 22, 0.2)",
       neutral: "#687076",
       "neutral-inverse": "#26292B",
       "primary-main": "#7828C8",
@@ -30,7 +32,9 @@ export const { styled, createTheme } = createStitches({
 export const darkTheme = createTheme({
   colors: {
     theme: "#161616",
+    "theme-blur": "rgba(22, 22, 22, 0.8)",
     "theme-inverse": "#FFFFFF",
+    "theme-inverse-blur": "rgba(255, 255, 255, 0.2)",
     neutral: "#9BA1A6",
     "neutral-inverse": "#ECEDEE",
     "primary-main": "#9750DD",

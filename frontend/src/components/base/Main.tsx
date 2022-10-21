@@ -13,7 +13,7 @@ const Main: NextPage<Props> = ({ children }) => {
 export default Main;
 
 const MainWrap = styled("main", {
-  padding: "16px 16px 80px",
+  paddingBottom: 80,
   "@sm": {
     paddingBottom: 92,
   },
