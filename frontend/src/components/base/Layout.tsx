@@ -1,6 +1,6 @@
 import React from "react";
 import type { NextPage } from "next";
-import Header from "./header";
+import DynamicBar from "./dynamicBar";
 import Main from "./Main";
 
 interface Props {
@@ -10,8 +10,8 @@ interface Props {
 const Layout: NextPage<Props> = ({ children }) => {
   return (
     <>
-      <Header />
       <Main>{children}</Main>
+      <DynamicBar />
     </>
   );
 };

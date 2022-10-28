@@ -4,7 +4,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import useHeaderStore from "store/header";
-import DynamicSwitchNavItem from "components/base/header/DynamicSwitchNavItem";
+import DynamicSwitchNavItem from "components/base/dynamicBar/DynamicSwitchNavItem";
 import { styled } from "styles/stitches.config";
 
 type NavItem = {

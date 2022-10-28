@@ -1,96 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import type { NextPage } from "next";
-import {
-  useSpring,
-  useSpringRef,
-  useChain,
-  easings,
-  animated,
-} from "react-spring";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
+import { useTrail, animated } from "react-spring";
 import { styled } from "styles/stitches.config";
 
 type logoBoxObjType = {
   length: "long" | "middle" | "short";
-  order: "1st" | "2nd" | "3rd" | undefined;
-  isDot: boolean;
+  order: "1st" | "2nd" | "3rd";
 };
 
 const logoBoxObj: logoBoxObjType[] = [
   {
-    length: "short",
-    order: "2nd",
-    isDot: true,
-  },
-  {
     length: "middle",
-    order: undefined,
-    isDot: false,
+    order: "2nd",
   },
   {
     length: "long",
     order: "1st",
-    isDot: true,
-  },
-  {
-    length: "middle",
-    order: undefined,
-    isDot: false,
   },
   {
     length: "short",
     order: "3rd",
-    isDot: true,
   },
 ];
 
 const Home: NextPage = () => {
-  const [items, setItems] = useState(logoBoxObj);
-  const logoRoundDot1stAnimatedRef = useSpringRef();
-  const logoRoundDot2ndAnimatedRef = useSpringRef();
-  const logoRoundDot3rdAnimatedRef = useSpringRef();
-
-  const logoRoundDot1stAnimated = useSpring({
-    from: { y: -8 },
+  const logoDotTrail = useTrail(3, {
+    config: { mass: 5, tension: 1000, friction: 200 },
     to: { y: 0 },
+    from: { y: 6 },
     loop: { reverse: true },
-    config: {
-      duration: 400,
-      easing: easings.easeInOutCubic,
-    },
-    delay: 400,
   });
-
-  const logoRoundDot2ndAnimated = useSpring({
-    from: { y: -24 },
-    to: { y: 0 },
-    loop: { reverse: true },
-    config: {
-      duration: 400,
-      easing: easings.easeInOutCubic,
-    },
-    delay: 200,
-  });
-
-  const logoRoundDot3rdAnimated = useSpring({
-    from: { y: -24 },
-    to: { y: 0 },
-    loop: { reverse: true },
-    config: {
-      duration: 400,
-      easing: easings.easeInOutCubic,
-    },
-    delay: 0,
-  });
-
-  useEffect(() => {
-    if (items.length === 0) {
-      setTimeout(() => {
-        setItems(logoBoxObj);
-      }, 2000);
-    }
-  }, [items]);
 
   return (
     <HomeWrap>
@@ -98,34 +37,22 @@ const Home: NextPage = () => {
         <PageHeaderIconWrap>
           <PageHeaderIconLogo>
             {logoBoxObj.map((item, index) => {
-              const { length, order, isDot } = item;
+              const { length, order } = item;
 
               return (
-                <PageHeaderIconLogoRoundBox key={index}>
-                  {isDot && (
-                    <PageHeaderIconLogoRoundDot
-                      style={(() => {
-                        switch (order) {
-                          case "1st":
-                            return logoRoundDot1stAnimated;
-                          case "2nd":
-                            return logoRoundDot2ndAnimated;
-                          case "3rd":
-                            return logoRoundDot3rdAnimated;
-                          default:
-                            return undefined;
-                        }
-                      })()}
-                      order={order}
-                    />
-                  )}
-                  <PageHeaderIconLogoRoundLine length={length} order={order} />
+                <PageHeaderIconLogoRoundBox key={index} length={length}>
+                  <PageHeaderIconLogoRoundDot
+                    style={logoDotTrail[index]}
+                    order={order}
+                  />
+                  <PageHeaderIconLogoRoundLine order={order} />
                 </PageHeaderIconLogoRoundBox>
               );
             })}
           </PageHeaderIconLogo>
         </PageHeaderIconWrap>
-        <PageHeaderTitle>colosseum</PageHeaderTitle>
+        <PageHeaderTitle>crownd</PageHeaderTitle>
+        <PageHeaderBeta>beta</PageHeaderBeta>
       </PageHeaderWarp>
       <HomeChildren>
         <img src="https://www.apple.com/v/iphone-14/b/images/overview/display/xdr_display__cxbhgrgt5keq_large.jpg" />
@@ -147,10 +74,10 @@ const HomeWrap = styled("article", {
 const PageHeaderWarp = styled("section", {
   display: "flex",
   alignItems: "center",
-  columnGap: "1rem",
+  columnGap: 8,
   position: "sticky",
   top: 0,
-  padding: "1rem",
+  padding: 8,
   backgroundColor: "$theme-blur",
   backdropFilter: "blur(1rem)",
 });
@@ -159,9 +86,12 @@ const PageHeaderIconWrap = styled("h1", {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  width: 48,
-  height: 48,
+  overflow: "hidden",
+  width: 40,
+  height: 40,
   borderRadius: "50%",
+  boxSizing: "content-box",
+  backgroundColor: "$neutral-inverse",
   "& svg": {
     fontSize: "1.5rem",
     color: "$primary-main",
@@ -170,11 +100,10 @@ const PageHeaderIconWrap = styled("h1", {
 
 const PageHeaderIconLogo = styled("div", {
   display: "flex",
-  columnGap: 2,
-  alignItems: "flex-end",
+  columnGap: 4,
+  alignItems: "center",
   justifyContent: "center",
   position: "relative",
-  padding: "0 8px",
   width: "100%",
   height: "100%",
 });
@@ -182,20 +111,34 @@ const PageHeaderIconLogo = styled("div", {
 const PageHeaderIconLogoRoundBox = styled("span", {
   display: "flex",
   flexDirection: "column",
-  rowGap: 4,
+  rowGap: 2,
   justifyContent: "flex-end",
   overflow: "hidden",
   position: "relative",
-  width: 8,
+  width: 4,
   height: "100%",
-  borderRadius: 4,
+  borderRadius: 2,
+  variants: {
+    length: {
+      long: {
+        height: 24,
+      },
+      middle: {
+        height: 20,
+      },
+      short: {
+        height: 16,
+      },
+    },
+  },
 });
 
 const PageHeaderIconLogoRoundDot = styled(animated.span, {
-  width: 8,
-  height: 8,
-  borderRadius: 4,
+  width: 4,
+  height: 4,
+  borderRadius: 2,
   backgroundColor: "$theme-inverse",
+  willChange: "transform",
   variants: {
     order: {
       "1st": {
@@ -212,22 +155,12 @@ const PageHeaderIconLogoRoundDot = styled(animated.span, {
 });
 
 const PageHeaderIconLogoRoundLine = styled(animated.span, {
+  flex: 1,
   width: "100%",
-  borderRadius: 4,
+  borderRadius: 2,
   backgroundColor: "$theme-inverse",
   transformOrigin: "center",
   variants: {
-    length: {
-      long: {
-        height: 36,
-      },
-      middle: {
-        height: 28,
-      },
-      short: {
-        height: 20,
-      },
-    },
     order: {
       "1st": {
         backgroundColor: "$error-main",
@@ -243,13 +176,25 @@ const PageHeaderIconLogoRoundLine = styled(animated.span, {
 });
 
 const PageHeaderTitle = styled("strong", {
-  background: "linear-gradient(135deg, $primary-main, $error-main)",
-  backgroundClip: "text",
-  color: "transparent",
-  fontSize: "1.5rem",
+  height: 20,
+  color: "$primary-main",
+  fontSize: 20,
   textTransform: "uppercase",
   fontWeight: 900,
+  lineHeight: "1.25rem",
   letterSpacing: -0.5,
+});
+
+const PageHeaderBeta = styled("span", {
+  padding: "0 0.25rem",
+  height: 16,
+  borderRadius: 10,
+  backgroundColor: "$primary-main",
+  fontSize: "0.5rem",
+  fontWeight: 900,
+  color: "$theme",
+  textTransform: "uppercase",
+  lineHeight: "1rem",
 });
 
 const HomeChildren = styled("section", {

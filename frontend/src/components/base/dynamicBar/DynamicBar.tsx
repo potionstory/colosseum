@@ -9,9 +9,9 @@ import {
   faUser,
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
-import DynamicSwitch from "components/base/header/DynamicSwitch";
-import DynamicIsland from "components/base/header/DynamicIsland";
-import DynamicTheme from "components/base/header/DynamicTheme";
+import DynamicSwitch from "components/base/dynamicBar/DynamicSwitch";
+import DynamicIsland from "components/base/dynamicBar/DynamicIsland";
+import DynamicTheme from "components/base/dynamicBar/DynamicTheme";
 import { styled } from "styles/stitches.config";
 
 type NavItem = {
@@ -48,7 +48,7 @@ const navList: NavItem[] = [
   },
 ];
 
-const Header: NextComponentType = () => {
+const DynamicBar: NextComponentType = () => {
   const router = useRouter();
   const [navIndex, setNavIndext] = useState(0);
 
@@ -62,8 +62,8 @@ const Header: NextComponentType = () => {
 
   return (
     <>
-      <HeaderWrap>
-        <HeaderInner>
+      <DynamicBarWrap>
+        <DynamicBarInner>
           <DynamicSwitch navList={navList} navIndex={navIndex} />
           <DynamicIsland
             navList={navList}
@@ -71,23 +71,23 @@ const Header: NextComponentType = () => {
             onNavIndexChange={onNavIndexChange}
           />
           <DynamicTheme />
-        </HeaderInner>
-      </HeaderWrap>
+        </DynamicBarInner>
+      </DynamicBarWrap>
     </>
   );
 };
 
-export default Header;
+export default DynamicBar;
 
-const HeaderWrap = styled("header", {
+const DynamicBarWrap = styled("section", {
   position: "fixed",
   bottom: 0,
   left: 0,
   width: "100%",
-  padding: 16,
+  padding: 8,
 });
 
-const HeaderInner = styled("div", {
+const DynamicBarInner = styled("div", {
   display: "flex",
   columnGap: 8,
   justifyContent: "space-between",
